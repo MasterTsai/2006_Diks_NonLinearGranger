@@ -1,0 +1,42 @@
+
+This is the code used for Table 3 of section 5 of:
+
+Diks, C. and Panchenko, V. (2006) 
+A new statistic and practical guidelines for nonparametric Granger causality
+testing, Journal of Economic Dynamics and Control 30 (9-10), 1647-1669.
+
+The matlab code is for pre-processing the data. From the Matlab main menu 
+choose File/import data and then select spx.csv. This will give you two data
+matrices called data and textdata, (with prices/volumes and days) repectively.
+
+The Matlab command
+
+[rp,vp] = deseason(data, textdata)
+
+will then give you Rp as in the Hiemstra-Jones paper (equation 13) and
+the analogue for volume changes.
+
+The Matlab command
+
+[ur, uv] = var_resid(rp, vp)
+
+gives the VAR-residuals (i.e. the residual of Hiemstra Jones equation 14).
+
+You can analyse the resulting data pair [ur, uv] by writing them to file
+(I've also included them already in the Matlab directory), copying them over
+to the c-code directory and running hjt2_tval. The latter should probably be
+re-compiled if you are not running a Linux 2.6 kernel or Windows (there are 
+two executables, the one with the .exe extension is for Windows). Besides the 
+output reported in the top half of our paper it will also give the results for 
+the data transformed to a uniform distribution. The bandwidth value is 
+hard-coded in the current version, so changing it requires re-compiling.
+
+Finally I also included EGARCH(1,1) residuals in the files spx_uer.dat and
+spx_uev.dat. I cannot reproduce the construction of those since I no longer
+have the GARCH Matlab toolkit. I guess that this can be done also
+easily in EViews, for instance.
+
+To generate the results in the lower part of Table 3, we tested for Granger
+causality between spx_uer.dat and spx_uv.dat (i.e. only GARCH filtering for
+the returns, not for the volumes).
+
